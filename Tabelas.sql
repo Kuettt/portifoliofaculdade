@@ -1,0 +1,52 @@
+
+CREATE TABLE Estado(
+	Id INT NOT NULL AUTO_INCREMENT,
+    Nome VARCHAR(50) NOT NULL, 
+    UF CHAR(2) NOT NULL,
+    PRIMARY KEY (Id)
+);
+
+CREATE TABLE Municipio(
+Id INT NOT NULL AUTO_INCREMENT,
+Nome VARCHAR(80) NOT NULL, 
+CodIBGE INT NOT NULL, 
+Estado_Id INT NOT NULL, 
+PRIMARY KEY(Id),
+CONSTRAINT fk_Estado_Id
+FOREIGN KEY (Estado_Id) REFERENCES Estado(Id)
+ON DELETE NO ACTION 
+
+);
+
+CREATE TABLE Cliente (
+	Id INT NOT NULL AUTO_INCREMENT,
+    Nome VARCHAR(80) NOT NULL,
+    CPF CHAR(11) NOT NULL,
+    Celular CHAR(11),
+    EndLogradouro VARCHAR(100) NOT NULL, 
+    EndNumero VARCHAR(10) NOT NULL, 
+    EndMunicipio INT NOT NULL,
+    EndCEP CHAR(8),
+    Municipio_Id INT NOT NULL, 
+    PRIMARY KEY (Id),
+    CONSTRAINT fk_Municipio_Id
+    FOREIGN KEY (Municipio_Id) REFERENCES Municipio(Id)
+    ON DELETE NO ACTION 
+    ON UPDATE NO ACTION 
+);
+
+CREATE TABLE ContaReceber (
+	Id INT NOT NULL AUTO_INCREMENT, 
+    FaturaVenda INT,
+    DataConta DATE NOT NULL, 
+    DataVencimento DATE NOT NULL, 
+    Valor DECIMAL(18, 2),
+    Situacao ENUM('1', '2', '3'),
+    Cliente_Id INT NOT NULL,
+    PRIMARY KEY (Id),
+    CONSTRAINT fk_Cliente_Id
+    FOREIGN KEY (Cliente_Id) REFERENCES Cliente(Id)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
